@@ -1,15 +1,17 @@
 import pyrebase
 import time
 
+# Change the config files!
+
 firebaseConfig = {
-    'apiKey': "AIzaSyBXNk5F1i8BDfT4t8VPLSyvj-EpFkvIqSY",
-    'authDomain': "desain-projek.firebaseapp.com",
-    'databaseURL': "https://desain-projek-default-rtdb.asia-southeast1.firebasedatabase.app",
-    'projectId': "desain-projek",
-    'storageBucket': "desain-projek.appspot.com",
-    'messagingSenderId': "213519052918",
-    'appId': "1:213519052918:web:9567bd6462c94eeccb6f57",
-    'measurementId': "G-93YVMEQCFQ"}
+    'apiKey': "API",
+    'authDomain': "AUTH",
+    'databaseURL': "DBURL",
+    'projectId': "IDPROJ",
+    'storageBucket': "BUCKER",
+    'messagingSenderId': "SENDERID",
+    'appId': "APPID",
+    'measurementId': "MEASUREMNENT ID"}
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 
