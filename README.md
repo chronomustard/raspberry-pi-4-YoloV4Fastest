@@ -4,7 +4,7 @@ Welcome to the Human Presence Detection project designed to streamline class att
 
 ## Overview
 
-This project is a customized adaptation of the [YoloFastestV2-ncnn repository](https://github.com/Qengineering/YoloFastestV2-ncnn) by [Qengineering](https://github.com/Qengineering), tailored specifically for detecting human presence in classroom settings. By harnessing the power of YoloFastestV2-ncnn, our focus is on providing an efficient, accurate, and real-time solution for attendance tracking.
+This project is a customized adaptation of the [YoloFastestV2-ncnn repository](https://github.com/Qengineering/YoloFastestV2-ncnn-Raspberry-Pi-4) by [Qengineering](https://github.com/Qengineering), tailored specifically for detecting human presence in classroom settings. By harnessing the power of YoloFastestV2-ncnn, our focus is on providing an efficient, accurate, and real-time solution for attendance tracking.
 
 ### Features
 
@@ -58,4 +58,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ### Acknowledgments
 
-We extend our gratitude to the creators of the [YoloFastestV2-ncnn repository](https://github.com/Qengineering), particularly the team at [Qengineering](https://github.com/Qengineering), whose pioneering work forms the backbone of our endeavor.
+We extend our gratitude to the creators of the [YoloFastestV2-ncnn repository](https://github.com/Qengineering/YoloFastestV2-ncnn-Raspberry-Pi-4), particularly the team at [Qengineering](https://github.com/Qengineering), whose pioneering work forms the backbone of our endeavor.
