@@ -21,8 +21,13 @@
 #include <stdio.h>
 #include <vector>
 #include "yolo-fastestv2.h"
+#include <cstdio>
+#include <ctime>
+#include <fstream>
 
 yoloFastestv2 yoloF2;
+
+using namespace std;
 
 const char* class_names[] = {
     "background", "person", "bicycle",
@@ -44,6 +49,8 @@ const char* class_names[] = {
 };
 
 int humans = 0;
+float capacity = 0.0;
+int delay = 0;
 
 static void draw_objects(cv::Mat& cvImg, const std::vector<TargetBox>& boxes)
 {
@@ -82,6 +89,8 @@ static void draw_objects(cv::Mat& cvImg, const std::vector<TargetBox>& boxes)
 int main(int argc, char** argv)
 {
     float f;
+    delay = 15 * CLOCKS_PER_SEC;
+    clock_t now = clock();
     float FPS[16];
     int i,Fcnt=0;
     cv::Mat frame;
@@ -122,7 +131,26 @@ int main(int argc, char** argv)
         if(f>0.0) FPS[((Fcnt++)&0x0F)]=1000.0/f;
         for(f=0.0, i=0;i<16;i++){ f+=FPS[i]; }
         putText(frame, cv::format("FPS %0.2f", f/16),cv::Point(10,20),cv::FONT_HERSHEY_SIMPLEX,0.6, cv::Scalar(0, 0, 255));
+
+        //Change this
         std::cout << "how many human: " << humans << std::endl;
+        std::cout << "delay: " << delay << std::endl;
+        std::cout << "dt: " << clock() - now << std::endl;
+        std::cout << "capacity: " << humans*100/36 << "%" << std::endl;
+
+        //Delay send
+        if (clock() - now > delay){
+            std::cout << "Delayed print" << std::endl;
+            ofstream MyFile("humans.txt");
+            MyFile << humans;
+            ofstream MyFile1("capacity.txt");
+            MyFile1 << humans*100 / 36 ;
+
+            MyFile.close();
+            MyFile1.close();
+
+            now = clock();
+        }
 
         //show outputstd::cerr << "ERROR: Unable to grab from the camera" << std::endl;
         cv::imshow("Jetson Nano",frame);
