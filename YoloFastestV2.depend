@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1701219579 source:/home/gladiatos/DesproOlive/mainFV2.cpp
+1701248244 source:/home/gladiatos/DesproOlive/mainFV2.cpp
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	<opencv2/imgproc/imgproc.hpp>
@@ -7,6 +7,9 @@
 	<stdio.h>
 	<vector>
 	"yolo-fastestv2.h"
+	<cstdio>
+	<ctime>
+	<fstream>
 
 1701192204 /usr/local/include/opencv4/opencv2/core/core.hpp
 	"opencv2/core.hpp"
