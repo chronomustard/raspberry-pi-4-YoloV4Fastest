@@ -142,7 +142,7 @@ int main(int argc, char** argv)
         if (clock() - now > delay){
             std::cout << "Delayed print" << std::endl;
             ofstream MyFile("humans.txt");
-            MyFile << humans;
+            MyFile << humans - 1;
             ofstream MyFile1("capacity.txt");
             MyFile1 << humans*100 / 36 ;
 
