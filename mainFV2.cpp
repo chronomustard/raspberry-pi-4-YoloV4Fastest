@@ -46,26 +46,27 @@ const char* class_names[] = {
     "cell phone", "microwave", "oven", "toaster", "sink",
     "refrigerator", "book", "clock", "vase", "scissors",
     "teddy bear", "hair drier", "toothbrush"
-};
+}; // Here are the classes that have been pretrained
 
-int humans = 0;
-float capacity = 0.0;
+int humans = 0; // Transfered Data
+float capacity = 0.0; // Transfered Data
 int delay = 0;
+const int full_capacity = 36; // Full capacity of the class
 
 static void draw_objects(cv::Mat& cvImg, const std::vector<TargetBox>& boxes)
 {
     humans = 0;
     for(size_t i = 0; i < boxes.size(); i++) {
   //      std::cout<<boxes[i].x1<<" "<<boxes[i].y1<<" "<<boxes[i].x2<<" "<<boxes[i].y2
-  //               <<" "<<boxes[i].score<<" "<<boxes[i].cate<<std::endl;
+  //               <<" "<<boxes[i].score<<" "<<boxes[i].cate<<std::endl; // Use this if needed for debugging
 
-        if(boxes[i].cate == 0){
-            humans ++;
-            std::cout << humans << std::endl;
+        if(boxes[i].cate == 0){ // Category for human class index is 0
+            humans ++; // For each box made for human, human count add 1
+            std::cout << humans << std::endl; // Used for debugging to show human number
         }
 
         char text[256];
-        sprintf(text, "%s %.1f%%", class_names[boxes[i].cate+1], boxes[i].score * 100);
+        sprintf(text, "%s %.1f%%", class_names[boxes[i].cate+1], boxes[i].score * 100); // Print the category and confidence score on the box
 
         int baseLine = 0;
         cv::Size label_size = cv::getTextSize(text, cv::FONT_HERSHEY_SIMPLEX, 0.5, 1, &baseLine);
@@ -76,14 +77,18 @@ static void draw_objects(cv::Mat& cvImg, const std::vector<TargetBox>& boxes)
         if (x + label_size.width > cvImg.cols) x = cvImg.cols - label_size.width;
 
         cv::rectangle(cvImg, cv::Rect(cv::Point(x, y), cv::Size(label_size.width, label_size.height + baseLine)),
-                      cv::Scalar(255, 255, 255), -1);
+                      cv::Scalar(255, 255, 255), -1); // Set box for class label
 
         cv::putText(cvImg, text, cv::Point(x, y + label_size.height),
-                    cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0));
+                    cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0)); // Set the sprintf text into the box with font
 
         cv::rectangle (cvImg, cv::Point(boxes[i].x1, boxes[i].y1),
-                       cv::Point(boxes[i].x2, boxes[i].y2), cv::Scalar(255,0,0));
+                       cv::Point(boxes[i].x2, boxes[i].y2), cv::Scalar(255,0,0)); // Put the big box in the object
     }
+    
+    //Exclude the lecturer
+    humans --;
+    if (humans < 0) humans = 0;
 }
 
 int main(int argc, char** argv)
@@ -99,11 +104,11 @@ int main(int argc, char** argv)
 
     for(i=0;i<16;i++) FPS[i]=0.0;
 
-    yoloF2.init(false); //we have no GPU
+    yoloF2.init(false); //we have no GPU in raspberri Pi 4
 
-    yoloF2.loadModel("yolo-fastestv2-opt.param","yolo-fastestv2-opt.bin");
+    yoloF2.loadModel("yolo-fastestv2-opt.param","yolo-fastestv2-opt.bin"); // Load the pretrained model and parameter
 
-    cv::VideoCapture cap(0);
+    cv::VideoCapture cap(0); // Connect to the camera, else change the 0 into video name. ("oliveganteng.mp4")
 
     if (!cap.isOpened()) {
         std::cerr << "ERROR: Unable to open the camera" << std::endl;
@@ -122,8 +127,8 @@ int main(int argc, char** argv)
         Tbegin = std::chrono::steady_clock::now();
 
         std::vector<TargetBox> boxes;
-        yoloF2.detection(frame, boxes);
-        draw_objects(frame, boxes);
+        yoloF2.detection(frame, boxes); // Object detection and categorization is in this function (from yolo-fastestv2.cpp)
+        draw_objects(frame, boxes); // Draw the box and the category
         Tend = std::chrono::steady_clock::now();
 
         //calculate frame rate
@@ -136,7 +141,7 @@ int main(int argc, char** argv)
         std::cout << "how many human: " << humans << std::endl;
         std::cout << "delay: " << delay << std::endl;
         std::cout << "dt: " << clock() - now << std::endl;
-        std::cout << "capacity: " << humans*100/36 << "%" << std::endl;
+        std::cout << "capacity: " << humans*100/full_capacity << "%" << std::endl;
 
         //Delay send
         if (clock() - now > delay){
@@ -144,8 +149,8 @@ int main(int argc, char** argv)
             ofstream MyFile("humans.txt");
             MyFile << humans;
             ofstream MyFile1("capacity.txt");
-            MyFile1 << humans*100 / 36 ;
-
+            MyFile1 << humans*100 / full_capacity ;
+            
             MyFile.close();
             MyFile1.close();
 
