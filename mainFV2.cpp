@@ -85,6 +85,10 @@ static void draw_objects(cv::Mat& cvImg, const std::vector<TargetBox>& boxes)
         cv::rectangle (cvImg, cv::Point(boxes[i].x1, boxes[i].y1),
                        cv::Point(boxes[i].x2, boxes[i].y2), cv::Scalar(255,0,0)); // Put the big box in the object
     }
+    
+    //Exclude the lecturer
+    humans --;
+    if (humans < 0) humans = 0;
 }
 
 int main(int argc, char** argv)
@@ -137,7 +141,7 @@ int main(int argc, char** argv)
         std::cout << "how many human: " << humans << std::endl;
         std::cout << "delay: " << delay << std::endl;
         std::cout << "dt: " << clock() - now << std::endl;
-        std::cout << "capacity: " << humans*100/full_capacity-1 << "%" << std::endl;
+        std::cout << "capacity: " << humans*100/full_capacity << "%" << std::endl;
 
         //Delay send
         if (clock() - now > delay){
@@ -145,7 +149,7 @@ int main(int argc, char** argv)
             ofstream MyFile("humans.txt");
             MyFile << humans - 1;
             ofstream MyFile1("capacity.txt");
-            MyFile1 << humans*100 / full_capacity-1 ;
+            MyFile1 << humans*100 / full_capacity ;
 
             MyFile.close();
             MyFile1.close();
